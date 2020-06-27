@@ -13,7 +13,7 @@ use Illuminate\Database\Query\JoinClause;
 /**
  * Class HasByJoinMacro
  *
- * Convert has() and whereHas() constraints into join() ones against singular relations.
+ * Convert has() and whereHas() constraints to join() ones for single-result relations.
  */
 class HasByJoinMacro
 {
@@ -41,7 +41,7 @@ class HasByJoinMacro
      */
     public function __invoke($relationMethod, ?callable ...$constraints): Builder
     {
-        // Prepare the root Model
+        // Prepare a root Model
         $root = $current = $this->query->getModel();
 
         // Extract dot-chained expressions
@@ -54,7 +54,7 @@ class HasByJoinMacro
             // Create a Relation instance
             $relation = $current->newModelQuery()->getRelation($currentRelationMethod);
 
-            // Convert Relation constraints into JOIN ones
+            // Convert Relation constraints to JOIN ones
             $this->applyRelationAsJoin($relation, $constraints[$i] ?? null, $currentTableAlias);
 
             // Prepare the next Model
@@ -70,7 +70,7 @@ class HasByJoinMacro
     }
 
     /**
-     * Convert Relation constraints into JOIN ones.
+     * Convert Relation constraints to JOIN ones.
      *
      * @param \Illuminate\Database\Eloquent\Relations\Relation $relation
      * @param null|callable                                    $constraints
@@ -78,12 +78,12 @@ class HasByJoinMacro
      */
     protected function applyRelationAsJoin(Relation $relation, ?callable $constraints, ?string $tableAlias): void
     {
-        // Support only BelongsTo or HasOne relations
+        // Support BelongsTo and HasOne relations only
         if ((!$relation instanceof BelongsTo || $relation instanceof MorphTo) && !$relation instanceof HasOne) {
-            throw new DomainException('Unsupported relation. Currently supported: BelongsTo, HasOne');
+            throw new DomainException('Unsupported relation. Currently supported: BelongsTo and HasOne');
         }
 
-        // Generate the same subquery as what has() method does
+        // Generate the same subquery as has() method does
         $relationExistenceQuery = $relation
             ->getRelationExistenceQuery($this->overrideTableWithAlias($relation->getRelated()->newQuery(), $tableAlias), $this->query)
             ->mergeConstraintsFrom($relationQuery = $this->overrideTableWithAlias($relation->getQuery(), $tableAlias));
@@ -96,10 +96,10 @@ class HasByJoinMacro
             $constraints($relationExistenceQuery);
         }
 
-        // Convert Eloquent Builder into Query Builder and evaluate scope constraints
+        // Convert Eloquent Builder to Query Builder and evaluate scope constraints
         $relationExistenceQuery = $relationExistenceQuery->toBase();
 
-        // Migrate has() constraints into join()
+        // Migrate has() constraints to join()
         $this->query->join(
             $tableAlias ? "$relationExistenceQuery->from as $tableAlias" : $relationExistenceQuery->from,
             function (JoinClause $join) use ($relationExistenceQuery) {
@@ -148,7 +148,7 @@ class HasByJoinMacro
 
     /**
      * Extra where() or join() constraints in relation are evaluated early,
-     * so we cannot apply table alias to them.
+     * so we cannot apply table aliases to them.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param null|string                           $tableAlias
