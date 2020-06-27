@@ -45,7 +45,7 @@ class HasByJoinMacro
         $root = $current = $this->query->getModel();
 
         // Extract dot-chained expressions
-        $relationMethods = is_string($relationMethod) ? explode('.', $relationMethod) : $relationMethod;
+        $relationMethods = is_string($relationMethod) ? explode('.', $relationMethod) : array_values($relationMethod);
 
         foreach ($relationMethods as $i => $currentRelationMethod) {
             // Extract an alias specified with "as" if exists
