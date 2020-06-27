@@ -1,6 +1,6 @@
 {
     "name": "mpyw/eloquent-has-by-join",
-    "description": "Convert has() and whereHas() constraints into join() ones against singular relations",
+    "description": "Convert has() and whereHas() constraints to join() ones for single-result relations.",
     "type": "library",
     "license": "MIT",
     "authors": [

@@ -316,7 +316,7 @@ EOD
     public function testPostHavingComments(): void
     {
         $this->expectException(DomainException::class);
-        $this->expectExceptionMessage('Unsupported relation. Currently supported: BelongsTo, HasOne');
+        $this->expectExceptionMessage('Unsupported relation. Currently supported: BelongsTo and HasOne');
 
         Post::query()->hasByJoin('comments');
     }

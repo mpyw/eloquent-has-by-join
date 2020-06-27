@@ -6,7 +6,7 @@ namespace Illuminate\Database\Eloquent
         class Builder
         {
             /**
-             * Convert has() and whereHas() constraints into join() ones against BelongsTo and HasOne relations.
+             * Convert has() and whereHas() constraints to join() ones for BelongsTo and HasOne relations.
              *
              * @param  string|string[]                       $relationMethod
              * @param  callable[]|null[]                     $constraints

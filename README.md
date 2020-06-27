@@ -1,6 +1,6 @@
 # Eloquent Has By Join [![Build Status](https://travis-ci.com/mpyw/eloquent-has-by-join.svg?branch=master)](https://travis-ci.com/mpyw/eloquent-has-by-join) [![Coverage Status](https://coveralls.io/repos/github/mpyw/eloquent-has-by-join/badge.svg?branch=master)](https://coveralls.io/github/mpyw/eloquent-has-by-join?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mpyw/eloquent-has-by-join/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mpyw/eloquent-has-by-join/?branch=master)
 
-Convert `has()` and `whereHas()` constraints into `join()` ones against singular relations.
+Convert `has()` and `whereHas()` constraints to `join()` ones for single-result relations.
 
 ## Requirements
 
@@ -15,7 +15,7 @@ composer require mpyw/eloquent-has-by-join
 
 ## Motivation
 
-Suppose you have the following relationships:
+Suppose you have the following relationship:
 
 ```php
 class Post extends Model
@@ -37,7 +37,7 @@ class Comment extends Model
 }
 ```
 
-If you use `has()` constraints, your actual query will have **dependent subqueries**.
+If you use `has()` constraints, your actual query would have **dependent subqueries**.
 
 ```php
 $comments = Comment::has('post')->get();
@@ -51,8 +51,8 @@ select * from `comments` where exists (
 ) and `comments`.`deleted_at` is null
 ``` 
 
-But these subqueries may cause performance degradations.
-This package provides **`\Illuminate\Database\Eloquent\Builder::hasByJoin()`** macro to resolve this problem;
+These subqueries may cause performance degradations.
+This package provides **`\Illuminate\Database\Eloquent\Builder::hasByJoin()`** macro to solve this problem:
 you can easily transform dependent subqueries into simple JOIN queries.
 
 ```php
@@ -79,7 +79,7 @@ where `comments`.`deleted_at` is null
 
 #### `$relationMethod`
 
-A relation method name that returns **`BelongsTo`** or **`HasOne`** instance.
+A relation method name that returns a **`BelongsTo`** or **`HasOne`** instance.
 
 ```php
 Builder::hasByJoin('post')
@@ -103,13 +103,13 @@ Builder::hasByJoin(['post as messages', 'author as message_authors'])
 
 #### `$constraints`
 
-Additional `callable` constraints for relations that takes `\Illuminate\Database\Eloquent\Builder` as the first argument.
+Additional `callable` constraints for relations that take `\Illuminate\Database\Eloquent\Builder` as the first argument.
 
 ```php
 Builder::hasByJoin('post', fn (Builder $query) => $query->withTrashed())
 ```
 
-The first closure corresponds to `post`, then the second one corresponds to `author`.
+The first closure corresponds to `post` and the second one corresponds to `author`.
 
 ```php
 Builder::hasByJoin(
