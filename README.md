@@ -52,7 +52,7 @@ select * from `comments` where exists (
 ``` 
 
 These subqueries may cause performance degradations.
-This package provides **`\Illuminate\Database\Eloquent\Builder::hasByJoin()`** macro to solve this problem:
+This package provides **`Illuminate\Database\Eloquent\Builder::hasByJoin()`** macro to solve this problem:
 you can easily transform dependent subqueries into simple JOIN queries.
 
 ```php
@@ -72,7 +72,7 @@ where `comments`.`deleted_at` is null
 ### Signature
 
 ```php
-\Illuminate\Database\Eloquent\Builder::hasByJoin(string|string[] $relationMethod, ?callable ...$constraints): $this
+Illuminate\Database\Eloquent\Builder::hasByJoin(string|string[] $relationMethod, ?callable ...$constraints): $this
 ```
 
 ### Arguments
@@ -103,7 +103,7 @@ Builder::hasByJoin(['post as messages', 'author as message_authors'])
 
 #### `$constraints`
 
-Additional `callable` constraints for relations that take `\Illuminate\Database\Eloquent\Builder` as the first argument.
+Additional `callable` constraints for relations that take **`Illuminate\Database\Eloquent\Builder`** as the first argument.
 
 ```php
 Builder::hasByJoin('post', fn (Builder $query) => $query->withTrashed())
@@ -118,3 +118,28 @@ Builder::hasByJoin(
     fn (Builder $query) => $query->whereKey(123)
 )
 ```
+
+## Feature Comparison
+
+| Feature | `mpyw/eloquent-has-by-join` | [`mpyw/eloquent-has-by-non-dependent-subquery`](https://github.com/mpyw/eloquent-has-by-non-dependent-subquery) |
+|:----|:---:|:---:|
+| Minimum Laravel version | 5.6 | 5.8 |
+| Argument of optional constraints | `Illuminate\Database\Eloquent\Builder` | `Illuminate\Database\Eloquent\Relations\*` |
+| [Compoships](https://github.com/topclaudy/compoships) support | ✅ | ❌ |
+| No subqueries | ✅ | ❌<br>(Performance depends on database optimizers) |
+| No table collisions | ❌<br>(Sometimes you need to give aliases) | ✅ |
+| No column collisions | ❌<br>(Sometimes you need to use qualified column names) | ✅ |
+| OR conditions | ❌ | ✅ |
+| Negative conditions | ❌ | ✅ |
+| Counting conditions | ❌ | ❌ |
+| `HasOne` | ✅ | ✅ |
+| `HasMany` | ❌ | ✅ |
+| `BelongsTo` | ✅ | ✅ |
+| `BelongsToMany` | ❌ | ✅ |
+| `MorphOne` | ✅ | ✅ |
+| `MorphMany` | ❌ | ✅ |
+| `MorphTo` | ❌ | ❌ |
+| `MorphMany` | ❌ | ✅ |
+| `MorphToMany` | ❌ | ✅ |
+| `HasOneThrough` | ❌ | ✅ |
+| `HasManyThrough` | ❌ | ✅ |
