@@ -20,6 +20,11 @@ class Post extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function polymorphicPinnedComment()
+    {
+        return $this->morphOne(Comment::class, 'commentable')->where('comments.pinned', 1);
+    }
+
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');

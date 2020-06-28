@@ -79,7 +79,7 @@ where `comments`.`deleted_at` is null
 
 #### `$relationMethod`
 
-A relation method name that returns a **`BelongsTo`** or **`HasOne`** instance.
+A relation method name that returns a **`BelongsTo`**, **`HasOne`** or **`MorphOne`** instance.
 
 ```php
 Builder::hasByJoin('post')
