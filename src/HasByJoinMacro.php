@@ -6,6 +6,7 @@ use DomainException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\JoinClause;
@@ -79,8 +80,8 @@ class HasByJoinMacro
     protected function applyRelationAsJoin(Relation $relation, ?callable $constraints, ?string $tableAlias): void
     {
         // Support BelongsTo and HasOne relations only
-        if ((!$relation instanceof BelongsTo || $relation instanceof MorphTo) && !$relation instanceof HasOne) {
-            throw new DomainException('Unsupported relation. Currently supported: BelongsTo and HasOne');
+        if ((!$relation instanceof BelongsTo || $relation instanceof MorphTo) && !$relation instanceof HasOne && !$relation instanceof MorphOne) {
+            throw new DomainException('Unsupported relation. Currently supported: BelongsTo, HasOne and MorphOne');
         }
 
         // Generate the same subquery as has() method does

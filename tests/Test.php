@@ -4,8 +4,10 @@ namespace Mpyw\EloquentHasByJoin\Tests;
 
 use DomainException;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Str;
 use Mpyw\EloquentHasByJoin\EloquentHasByJoinServiceProvider;
+use Mpyw\EloquentHasByJoin\Tests\Models\Category;
 use Mpyw\EloquentHasByJoin\Tests\Models\Comment;
 use Mpyw\EloquentHasByJoin\Tests\Models\Post;
 use Mpyw\EloquentHasByJoin\Tests\Models\User;
@@ -31,6 +33,13 @@ class Test extends BaseTestCase
     protected function getEnvironmentSetUp($app): void
     {
         config(['database.default' => 'testing']);
+
+        Relation::morphMap([
+            'user' => User::class,
+            'post' => Post::class,
+            'comment' => Comment::class,
+            'category' => Category::class,
+        ]);
     }
 
     /**
@@ -297,6 +306,27 @@ EOD
         );
     }
 
+    public function testPostHavingPolymorphicPinnedComment(): void
+    {
+        $this->assertQueryEquals(
+            <<<'EOD'
+            select
+                "posts".*
+            from
+                "posts"
+            inner join "comments"
+                on "posts"."id" = "comments"."commentable_id"
+                and "comments"."commentable_type" = 'post'
+                and "comments"."pinned" = 1
+                and "comments"."deleted_at" is null
+            where
+                "posts"."deleted_at" is null
+EOD
+            ,
+            Post::query()->hasByJoin('polymorphicPinnedComment')
+        );
+    }
+
     public function testUsersHavingPinnedPostInvalidAliasWithWhere(): void
     {
         $this->expectException(DomainException::class);
@@ -316,7 +346,7 @@ EOD
     public function testPostHavingComments(): void
     {
         $this->expectException(DomainException::class);
-        $this->expectExceptionMessage('Unsupported relation. Currently supported: BelongsTo and HasOne');
+        $this->expectExceptionMessage('Unsupported relation. Currently supported: BelongsTo, HasOne and MorphOne');
 
         Post::query()->hasByJoin('comments');
     }
