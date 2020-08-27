@@ -46,11 +46,11 @@ class HasByJoinMacro
         $root = $current = $this->query->getModel();
 
         // Extract dot-chained expressions
-        $relationMethods = is_string($relationMethod) ? explode('.', $relationMethod) : array_values($relationMethod);
+        $relationMethods = \is_string($relationMethod) ? \explode('.', $relationMethod) : \array_values($relationMethod);
 
         foreach ($relationMethods as $i => $currentRelationMethod) {
             // Extract an alias specified with "as" if exists
-            [$currentRelationMethod, $currentTableAlias] = preg_split('/\s+as\s+/i', $currentRelationMethod, -1, PREG_SPLIT_NO_EMPTY) + [1 => null];
+            [$currentRelationMethod, $currentTableAlias] = \preg_split('/\s+as\s+/i', $currentRelationMethod, -1, PREG_SPLIT_NO_EMPTY) + [1 => null];
 
             // Create a Relation instance
             $relation = $current->newModelQuery()->getRelation($currentRelationMethod);
@@ -140,10 +140,10 @@ class HasByJoinMacro
         [$dst, $src] = [$dst->getQuery(), $src->getQuery()];
 
         if ($src->joins) {
-            $dst->joins = array_merge((array)$dst->joins, $src->joins);
+            $dst->joins = \array_merge((array)$dst->joins, $src->joins);
         }
         if ($src->bindings) {
-            $dst->bindings['join'] = array_merge((array)$dst->bindings['join'], $src->bindings['join']);
+            $dst->bindings['join'] = \array_merge((array)$dst->bindings['join'], $src->bindings['join']);
         }
     }
 
