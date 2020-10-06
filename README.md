@@ -5,7 +5,7 @@ Convert `has()` and `whereHas()` constraints to `join()` ones for single-result 
 ## Requirements
 
 - PHP: ^7.1
-- Laravel: ^5.6 || ^6.0 || ^7.0
+- Laravel: ^5.6 || ^6.0 || ^7.0 || ^8.0
 
 ## Installing
 
