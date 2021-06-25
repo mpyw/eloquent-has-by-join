@@ -1,11 +1,11 @@
-# Eloquent Has By Join [![Build Status](https://travis-ci.com/mpyw/eloquent-has-by-join.svg?branch=master)](https://travis-ci.com/mpyw/eloquent-has-by-join) [![Coverage Status](https://coveralls.io/repos/github/mpyw/eloquent-has-by-join/badge.svg?branch=master)](https://coveralls.io/github/mpyw/eloquent-has-by-join?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mpyw/eloquent-has-by-join/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mpyw/eloquent-has-by-join/?branch=master)
+# Eloquent Has By Join [![Build Status](https://github.com/mpyw/eloquent-has-by-join/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/mpyw/eloquent-has-by-join/actions) [![Coverage Status](https://coveralls.io/repos/github/mpyw/eloquent-has-by-join/badge.svg?branch=master)](https://coveralls.io/github/mpyw/eloquent-has-by-join?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mpyw/eloquent-has-by-join/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mpyw/eloquent-has-by-join/?branch=master)
 
 Convert `has()` and `whereHas()` constraints to `join()` ones for single-result relations.
 
 ## Requirements
 
-- PHP: ^7.3 || ^8.0
-- Laravel: ^6.0 || ^7.0 || ^8.0
+- PHP: `^7.3 || ^8.0`
+- Laravel: `^6.0 || ^7.0 || ^8.0`
 
 ## Installing
 
