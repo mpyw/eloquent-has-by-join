@@ -12,10 +12,10 @@ class EloquentHasByJoinServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Builder::macro('hasByJoin', function (...$args) {
+        Builder::macro('hasByJoin', function ($relationMethod, ?callable ...$constraints): Builder {
             /** @var \Illuminate\Database\Eloquent\Builder $query */
             $query = $this;
-            return (new HasByJoinMacro($query))(...$args);
+            return (new HasByJoinMacro($query))($relationMethod, ...$constraints);
         });
     }
 }
